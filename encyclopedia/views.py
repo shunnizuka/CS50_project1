@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django import forms
+import markdown2 as markdown
 
 from . import util
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
-    content = forms.CharField(label="Body")
-
+    content = forms.CharField(widget=forms.Textarea, label="Body")
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
