@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
+
+import random
 import markdown2
 
 from . import util
@@ -78,3 +80,8 @@ def editEntry(request, title):
             "title": title,
             "form": EditEntryForm(initial={'content': entry})
         })
+
+def randomPage(request):
+    entries = util.list_entries()
+    randomEntry = random.choice(entries)
+    return redirect('title', randomEntry)
