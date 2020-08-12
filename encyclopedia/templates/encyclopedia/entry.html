@@ -9,6 +9,7 @@
     {% if entry != None %}
         <h1>{{title}}</h1>
         <p>{{entry}}</p>
+        <a href="{% url 'editEntry' title %}">Edit</a>
     {% else %}
         <h1>Page Not found</h1>
         <p>Requested entry "{{title}}" does not exist</p>

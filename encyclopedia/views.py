@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django import forms
-import markdown2 as markdown
+import markdown2
 
 from . import util
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title")
+    content = forms.CharField(widget=forms.Textarea, label="Body")
+
+class EditEntryForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea, label="Body")
 
 def index(request):
@@ -54,3 +57,24 @@ def createEntry(request):
         return render(request, "encyclopedia/createNewPage.html", {
         "form": NewEntryForm()
     })
+
+def editEntry(request, title):
+    entry = util.get_entry(title)
+
+    if request.method == "POST":
+        editForm = EditEntryForm(request.POST)
+        if editForm.is_valid():
+            content = editForm.cleaned_data["content"]
+            util.save_entry(title, content)
+            return redirect('title', title)
+        else:
+            return render(request, "encyclopedia/editPage.html", {
+                "title": title,
+                "form": EditEntryForm(initial={'content': entry})
+            })
+
+    else:
+        return render(request, "encyclopedia/editPage.html", {
+            "title": title,
+            "form": EditEntryForm(initial={'content': entry})
+        })
