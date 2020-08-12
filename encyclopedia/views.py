@@ -19,8 +19,9 @@ def index(request):
     })
 
 def entryPage(request, title):
+    entry = util.get_entry(title)
     return render(request, "encyclopedia/entry.html", {
-        "entry": util.get_entry(title),
+        "entry": markdown2.markdown(entry),
         "title": title
     })
 
