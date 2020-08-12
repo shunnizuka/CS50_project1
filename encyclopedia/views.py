@@ -20,8 +20,10 @@ def index(request):
 
 def entryPage(request, title):
     entry = util.get_entry(title)
+    if entry != None:
+        entry = markdown2.markdown(entry)
     return render(request, "encyclopedia/entry.html", {
-        "entry": markdown2.markdown(entry),
+        "entry": entry,
         "title": title
     })
 
